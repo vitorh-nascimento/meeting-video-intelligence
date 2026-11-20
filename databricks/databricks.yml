@@ -1,0 +1,70 @@
+# ==============================================================================
+# Databricks Asset Bundle (DAB) — Meeting & Video Intelligence Lakehouse POC
+# 100% independente e parametrizável (zero credenciais ou schemas pessoais hardcoded).
+# ==============================================================================
+
+bundle:
+  name: meeting_video_intelligence
+
+variables:
+  catalog:
+    description: "Unity Catalog onde o schema, volume e tabelas Medallion residem"
+    default: "main"
+  schema:
+    description: "Schema alvo no Unity Catalog"
+    default: "meeting_intelligence"
+  volume_name:
+    description: "Nome do Volume no Unity Catalog que recebe as transcrições (.srt, .vtt, .txt, .json)"
+    default: "raw_transcripts"
+  categories_json:
+    description: "Lista JSON de categorias temáticas usadas por ai_classify"
+    default: '["Engenharia de Dados & Lakehouse", "Arquitetura Cloud & Infraestrutura", "Produto & Discovery de Cliente", "Alinhamento & Gestão de Equipe", "Treinamento & Aula Técnica", "Governança, Segurança & FinOps", "Geral / Outros"]'
+
+resources:
+  schemas:
+    meeting_intelligence_schema:
+      name: ${var.schema}
+      catalog_name: ${var.catalog}
+      comment: "Schema analítico da POC Meeting & Video Intelligence (Bronze/Silver/Gold)"
+
+  volumes:
+    raw_transcripts_volume:
+      name: ${var.volume_name}
+      catalog_name: ${var.catalog}
+      schema_name: ${var.schema}
+      volume_type: MANAGED
+      comment: "Landing zone de transcrições de reuniões e vídeos (.srt, .vtt, .txt, .json)"
+
+  pipelines:
+    meeting_intelligence_pipeline:
+      name: "[${bundle.target}] Meeting & Video Intelligence — Medallion AI Pipeline"
+      catalog: ${var.catalog}
+      schema: ${var.schema}
+      serverless: true
+      continuous: false
+      channel: current
+      root_path: ./src/pipelines/meeting_intelligence
+      libraries:
+        - glob:
+            include: ./src/pipelines/meeting_intelligence/transformations/**
+      configuration:
+        raw_volume_path: "/Volumes/${var.catalog}/${var.schema}/${var.volume_name}"
+        categories_json: "${var.categories_json}"
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: main
+      schema: meeting_intelligence_dev
+
+  prod:
+    mode: production
+    workspace:
+      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: main
+      schema: meeting_intelligence

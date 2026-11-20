@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Env & Local Data
+.env
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+*.tsbuildinfo
+
+# Databricks local bundle state
+databricks/.databricks/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

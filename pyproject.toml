@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "meeting-video-intelligence"
+version = "1.0.0"
+description = "Standalone Meeting & Video Intelligence App + Databricks Lakehouse AI POC"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic>=2.9.0",
+    "python-multipart>=0.0.12",
+    "httpx>=0.27.0",
+    "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+media = [
+    "youtube-transcript-api>=0.6.2",
+    "yt-dlp>=2024.10.0",
+    "imageio-ffmpeg>=0.5.1",
+]
+whisper = [
+    "faster-whisper>=1.1.0",
+]
+dev = [
+    "pytest>=8.3.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend"]
+testpaths = ["tests"]
