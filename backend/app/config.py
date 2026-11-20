@@ -89,10 +89,27 @@ def get_exports_dir() -> Path:
     return d
 
 
+DEFAULT_APP_HOST = "127.0.0.1"
+DEFAULT_APP_PORT = 8185
+
+
+def get_app_host() -> str:
+    return os.environ.get("APP_HOST", DEFAULT_APP_HOST).strip() or DEFAULT_APP_HOST
+
+
+def get_app_port() -> int:
+    raw = os.environ.get("APP_PORT", str(DEFAULT_APP_PORT)).strip()
+    try:
+        return int(raw)
+    except ValueError:
+        return DEFAULT_APP_PORT
+
+
 def get_cors_origins() -> List[str]:
     raw = os.environ.get(
         "CORS_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000",
+        "http://mvi.localhost:5185,http://localhost:5185,http://127.0.0.1:5185,"
+        "http://mvi.localhost:8185,http://localhost:8185,http://127.0.0.1:8185",
     )
     return [o.strip() for o in raw.split(",") if o.strip()]
 

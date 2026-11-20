@@ -1,19 +1,20 @@
 """
 Ponto de entrada da API REST FastAPI — Meeting & Video Intelligence.
-Execução local:
-  uvicorn app.main:app --app-dir backend --reload --port 8000
+Execução local (porta dedicada 8185 para evitar conflitos com 8000/5173):
+  uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8185
+  ou: python -m app.main
 """
 
 from __future__ import annotations
 
-from pathlib import Path
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app import __version__
-from app.config import PROJECT_ROOT, get_cors_origins
+from app.config import PROJECT_ROOT, get_app_host, get_app_port, get_cors_origins
 from app.routers import documents, ingest, settings
 
 app = FastAPI(
@@ -47,3 +48,15 @@ def health_check() -> dict[str, str]:
 FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
 if FRONTEND_DIST.exists() and (FRONTEND_DIST / "index.html").exists():
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIST), html=True), name="frontend")
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    reload_enabled = os.environ.get("APP_ENV", "development").lower() == "development"
+    uvicorn.run(
+        "app.main:app",
+        host=get_app_host(),
+        port=get_app_port(),
+        reload=reload_enabled,
+    )

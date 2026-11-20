@@ -68,6 +68,7 @@ flowchart LR
 meeting-video-intelligence/
 ├── .env.example                            # Template de variáveis (zero segredos hardcoded)
 ├── pyproject.toml                          # Metadados Python, dependências opcionais e config pytest
+├── start.ps1                               # Launcher em URL/portas dedicadas (8185 / 5185)
 ├── docs/
 │   └── ARCHITECTURE_AND_DECISIONS.md       # Arquitetura detalhada e ADRs (decisões técnicas)
 ├── backend/
@@ -110,45 +111,47 @@ meeting-video-intelligence/
 - **Opcional (recomendado para vídeos locais pesados e áudios > 1h):** `ffmpeg` no `PATH` ou `pip install imageio-ffmpeg`
 - **Opcional (sigilo 100% offline):** `pip install faster-whisper`
 
-### 1. Configurar e Rodar o Backend
+### 1. Configurar Backend e Frontend (primeira vez)
 ```powershell
 python -m venv .venv
 .venv\Scripts\pip.exe install -r backend\requirements.txt
 copy .env.example .env
+
+cd frontend
+npm.cmd install
+npm.cmd run build
+cd ..
 ```
 
 Edite `.env` com suas credenciais (ou configure diretamente pela tela **Configurações** na interface web — sem API Key, o app usa o modo `heuristic` offline automaticamente).
 
-Iniciar a API FastAPI (porta padrão `8000`):
-```powershell
-.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
-```
-- Swagger / OpenAPI: `http://127.0.0.1:8000/docs`
-- Healthcheck: `http://127.0.0.1:8000/api/health`
+### 2. Iniciar com URL e Portas Dedicadas (`8185` / `5185`)
+O projeto usa portas e subdomínio local dedicados (`mvi.localhost`) para **não conflitar** com outros projetos rodando nas portas padrão (`8000`, `8080`, `5173`, `3000`):
 
-### 2. Configurar e Rodar o Frontend (Dev)
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-> **Dica para Windows PowerShell:** caso a política de execução bloqueie `npm.ps1`, execute `npm.cmd install` e `npm.cmd run dev`.
+- **Atalho rápido (Single-Server — recomendado):**
+  ```powershell
+  .\start.ps1
+  ```
+  - **App:** `http://mvi.localhost:8185` *(ou `http://localhost:8185`)*
+  - **Swagger / OpenAPI:** `http://mvi.localhost:8185/docs`
+  - **Healthcheck:** `http://mvi.localhost:8185/api/health`
 
-Acesse: **http://localhost:5173**
+- **Atalho rápido (Modo Desenvolvimento com hot-reload):**
+  ```powershell
+  .\start.ps1 -Dev
+  ```
+  - **Frontend (Vite):** `http://mvi.localhost:5185` *(ou `http://localhost:5185`)*
+  - **Backend (FastAPI):** `http://mvi.localhost:8185`
 
-### 3. Modo Single-Server ou Portas Customizadas
-Para rodar tudo em uma única porta (ou evitar conflito com outros serviços locais nas portas `8000`/`5173`):
-
-```powershell
-# 1. Compilar o frontend
-cd frontend
-npm run build
-cd ..
-
-# 2. Subir o FastAPI em qualquer porta livre (ex.: 8010) — ele serve frontend/dist automaticamente
-.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8010
-```
-Acesse: **http://127.0.0.1:8010**
+> **Execução manual (sem script):**
+> ```powershell
+> # Backend (porta 8185)
+> .venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8185
+>
+> # Frontend dev (porta 5185 com proxy /api -> :8185)
+> cd frontend; npm.cmd run dev
+> ```
+> *Obs.: `mvi.localhost` funciona nativamente no Chrome e Edge sem precisar editar o arquivo `hosts` do Windows (RFC 6761). Caso use outro cliente, `http://localhost:8185` / `http://127.0.0.1:8185` aponta para o mesmo serviço.*
 
 ---
 

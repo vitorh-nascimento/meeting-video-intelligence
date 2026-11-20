@@ -2,13 +2,18 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
+const API_TARGET = process.env.VITE_API_TARGET || "http://127.0.0.1:8185";
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 5173,
+    host: "127.0.0.1",
+    port: 5185,
+    strictPort: true,
+    allowedHosts: ["mvi.localhost", "localhost", "127.0.0.1"],
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8000",
+        target: API_TARGET,
         changeOrigin: true,
       },
     },
