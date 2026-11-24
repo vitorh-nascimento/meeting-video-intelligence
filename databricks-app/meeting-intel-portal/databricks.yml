@@ -12,6 +12,7 @@ variables:
     description: Default Genie Space ID
   genie_space_name:
     description: Genie Space display name
+    default: meeting-intelligence-poc
 
 resources:
   apps:
@@ -45,14 +46,10 @@ resources:
             permission: CAN_RUN
 
 targets:
+  # O host do workspace NAO fica versionado: vem do perfil do CLI (--profile)
+  # ou da variavel de ambiente DATABRICKS_HOST.
+  # Os valores das variaveis acima vem de BUNDLE_VAR_<nome> ou de
+  # .databricks/bundle/default/variable-overrides.json (ignorado pelo git).
+  # Veja a secao "Configuracao do deploy" no README.
   default:
     default: true
-    workspace:
-      host: https://dbc-2339f0a9-6973.cloud.databricks.com
-
-    variables:
-      sql_warehouse_id: bf5166fb4194bfb5
-      files_path: /Volumes/workspace/dev_vitortesteestudos_meeting_intelligence_poc/raw_transcripts
-      files_id: workspace.dev_vitortesteestudos_meeting_intelligence_poc.raw_transcripts
-      genie_space_id: 01f1e74322c219b19b70b741bbfb0b84
-      genie_space_name: meeting-intelligence-poc

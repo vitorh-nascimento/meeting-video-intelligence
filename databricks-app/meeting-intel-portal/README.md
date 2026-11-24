@@ -67,6 +67,24 @@ databricks bundle deploy --profile production
 
 **Note:** Personal Access Tokens (PATs) are legacy authentication. OAuth is strongly recommended for better security.
 
+## Configuração do deploy
+
+O `databricks.yml` não versiona dados do workspace (host, SQL Warehouse, Volume, Genie Space).
+
+- **Host:** vem do perfil do CLI (`databricks bundle deploy --profile <SEU_PERFIL>`) ou de `DATABRICKS_HOST`.
+- **Variáveis do bundle:** crie `.databricks/bundle/default/variable-overrides.json` (ignorado pelo git):
+
+```json
+{
+  "sql_warehouse_id": "<SQL_WAREHOUSE_ID>",
+  "files_path": "/Volumes/<catalog>/<schema>/raw_transcripts",
+  "files_id": "<catalog>.<schema>.raw_transcripts",
+  "genie_space_id": "<GENIE_SPACE_ID>"
+}
+```
+
+Alternativas: variáveis de ambiente `BUNDLE_VAR_sql_warehouse_id=...` ou `--var="sql_warehouse_id=..."` no comando de deploy.
+
 ## Getting Started
 
 ### Install Dependencies

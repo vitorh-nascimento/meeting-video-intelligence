@@ -20,8 +20,8 @@ Salva:
 
 Uso:
     python databricks/eval/evaluate_poc.py \
-      --profile vitor.teste \
-      --warehouse bf5166fb4194bfb5 \
+      --profile <SEU_PERFIL> \
+      --warehouse <SQL_WAREHOUSE_ID> \
       --catalog workspace \
       --schema dev_vitortesteestudos_meeting_intelligence_poc
 """

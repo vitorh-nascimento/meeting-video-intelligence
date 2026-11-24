@@ -9,8 +9,8 @@ Meeting & Video Intelligence, seguindo rigorosamente o schema v2 do Genie API:
 
 Uso:
     python databricks/genie/create_genie_space.py \
-      --profile vitor.teste \
-      --warehouse bf5166fb4194bfb5 \
+      --profile <SEU_PERFIL> \
+      --warehouse <SQL_WAREHOUSE_ID> \
       --catalog workspace \
       --schema dev_vitortesteestudos_meeting_intelligence_poc
 """
