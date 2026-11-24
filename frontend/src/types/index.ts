@@ -1,7 +1,8 @@
 export type ExtractionTemplate =
   | "Reunião Corporativa"
   | "Aula/Vídeo Técnico"
-  | "Discovery/Cliente";
+  | "Discovery/Cliente"
+  | "Sessão Legislativa / Política";
 
 export interface JobStatus {
   id: string;

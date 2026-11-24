@@ -1,0 +1,12 @@
+Reunião: Arquitetura de Aplicações — Migração de Estado Operacional para Lakebase
+Data: 2026-11-19
+Duração: 40 min
+Participantes: Bianca Cardoso, Vinícius Castro
+---
+
+[00:00:10] Vinícius Castro: Nosso app de aprovação de descontos precisa de leitura transacional abaixo de 20ms combinada com dados analíticos do Unity Catalog.
+[00:00:37] Bianca Cardoso: Nos testes com Databricks Lakebase Postgres e Synced Tables conseguimos p95 de 11ms sem manter ETL manual.
+[00:01:02] Vinícius Castro: Decisão técnica: adotar Lakebase Postgres com Synced Tables como banco operacional do portal de aprovações.
+[00:01:26] Bianca Cardoso: Pendência aberta: confirmar com FinOps o teto de autoscaling em CU para o ambiente de produção.
+[00:01:51] Vinícius Castro: Bianca, provisione o projeto Lakebase em staging e configure a tabela sincronizada de clientes até 27/11/2026, prioridade Alta.
+[00:02:17] Vinícius Castro: Vou revisar a estimativa de custo de Lakebase com FinOps até 25/11/2026, prioridade Média.

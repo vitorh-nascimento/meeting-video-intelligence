@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:03,000
+Daniela Pires: Iniciando gravação da reunião Comitê de Segurança — Adoção de Zero Trust e Rotação de Segredos, data 2026-11-11, duração prevista de 44 minutos.
+
+2
+00:00:04,000 --> 00:00:21,000
+Daniela Pires: Na auditoria interna encontramos 9 Personal Access Tokens sem data de expiração em pipelines legadas.
+
+3
+00:00:24,000 --> 00:00:40,000
+Rodrigo Nogueira: Podemos migrar todas as integrações automatizadas para Service Principals com OAuth M2M.
+
+4
+00:00:43,000 --> 00:01:03,000
+Daniela Pires: Aprovado! Decisão do comitê: desativar PATs sem expiração e exigir OAuth M2M via Service Principal em todos os jobs de produção.
+
+5
+00:01:06,000 --> 00:01:23,000
+Rodrigo Nogueira: Ainda está pendente mapear quais scripts locais da equipe de Finanças usam tokens estáticos.
+
+6
+00:01:26,000 --> 00:01:45,000
+Daniela Pires: Rodrigo, faça o inventário de tokens ativos e migre os jobs críticos para Service Principal até 20/11/2026, prioridade Alta.
+
+7
+00:01:48,000 --> 00:02:06,000
+Daniela Pires: Vou publicar a política atualizada de rotação de credenciais no portal interno até 18/11/2026, prioridade Média.

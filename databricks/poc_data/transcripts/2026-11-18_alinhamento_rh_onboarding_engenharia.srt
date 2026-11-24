@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:03,000
+Priscila Duarte: Iniciando gravação da reunião Alinhamento RH e Engenharia — Trilha de Onboarding Técnico, data 2026-11-18, duração prevista de 30 minutos.
+
+2
+00:00:04,000 --> 00:00:25,000
+Priscila Duarte: Nos últimos três meses, novos engenheiros levaram em média 11 dias úteis para receber todos os acessos de Git, nuvem e Databricks.
+
+3
+00:00:28,000 --> 00:00:45,000
+Eduardo Neri: Criamos um checklist automatizado por perfil de cargo que reduz esse tempo para 2 dias.
+
+4
+00:00:48,000 --> 00:01:08,000
+Priscila Duarte: Decisão fechada: adotar o provisionamento por papel (RBAC) no primeiro dia e gravar tutoriais curtos de onboarding técnico no portal interno.
+
+5
+00:01:11,000 --> 00:01:30,000
+Eduardo Neri: Pendência: o time de TI Corporativa ainda não integrou o formulário de admissão com a fila automática do ServiceNow.
+
+6
+00:01:33,000 --> 00:01:52,000
+Priscila Duarte: Eduardo, publique o guia passo a passo de ambiente local e Databricks no portal até 26/11/2026, prioridade Média.
+
+7
+00:01:55,000 --> 00:02:12,000
+Priscila Duarte: Vou alinhar a integração do formulário de admissão com TI Corporativa até 25/11/2026, prioridade Alta.

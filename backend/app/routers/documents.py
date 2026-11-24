@@ -23,6 +23,7 @@ from app.schemas import (
     ChatQuestionRequest,
     DatabricksPushRequest,
     PendingUpdateRequest,
+    ReanalyzeDocumentRequest,
 )
 from app.services.databricks_sync import sanitize_filename
 from app.services.llm import get_llm_provider
@@ -145,6 +146,16 @@ def export_document(doc_id: str, fmt: str) -> PlainTextResponse:
 def push_to_databricks(doc_id: str, payload: DatabricksPushRequest) -> Dict[str, Any]:
     try:
         return pipeline.push_document_to_databricks(doc_id, run_pipeline=payload.run_pipeline)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/{doc_id}/reanalyze")
+def reanalyze_document(doc_id: str, payload: ReanalyzeDocumentRequest) -> Dict[str, Any]:
+    try:
+        return pipeline.reanalyze_document(doc_id, template=payload.template)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except Exception as exc:

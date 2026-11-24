@@ -1,0 +1,679 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "10000000000000000000000000000001",
+        "question": [
+          "Quais action items de prioridade Alta estão pendentes e quem são os responsáveis?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000002",
+        "question": [
+          "Quantas reuniões, decisões, pendências e action items foram processados por categoria?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000003",
+        "question": [
+          "Quais pendências e bloqueios estão em aberto nas reuniões de Governança, Segurança e FinOps?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000004",
+        "question": [
+          "Quais decisões foram aprovadas nas reuniões de Engenharia de Dados e Lakehouse?"
+        ]
+      },
+      {
+        "id": "10000000000000000000000000000005",
+        "question": [
+          "Qual foi a precisão, recall, taxa de JSON válido, latência média e custo estimado da POC?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_action_items",
+        "description": [
+          "Plano de ação consolidado com 1 linha por action item extraído das transcrições de reuniões via ai_query + responseFormat."
+        ],
+        "column_configs": [
+          {
+            "column_name": "arquivo_origem",
+            "description": [
+              "Nome do arquivo de transcrição original (.vtt, .srt, .txt)."
+            ]
+          },
+          {
+            "column_name": "categoria_ia",
+            "description": [
+              "Categoria temática classificada pela LLM."
+            ],
+            "synonyms": [
+              "domínio",
+              "área",
+              "tema"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "data_processamento",
+            "description": [
+              "Timestamp do processamento na camada Gold."
+            ]
+          },
+          {
+            "column_name": "data_reuniao",
+            "description": [
+              "Data em que a reunião ocorreu (DATE)."
+            ],
+            "synonyms": [
+              "data",
+              "dia da reunião"
+            ]
+          },
+          {
+            "column_name": "documento_id",
+            "exclude": true
+          },
+          {
+            "column_name": "prazo",
+            "description": [
+              "Prazo acordado para conclusão (ex.: DD/MM/AAAA ou A definir)."
+            ],
+            "synonyms": [
+              "deadline",
+              "data limite"
+            ]
+          },
+          {
+            "column_name": "prioridade",
+            "description": [
+              "Prioridade do action item: Alta, Média ou Baixa."
+            ],
+            "synonyms": [
+              "urgência",
+              "criticidade"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "responsavel",
+            "description": [
+              "Nome da pessoa responsável pela execução do action item."
+            ],
+            "synonyms": [
+              "dono",
+              "owner",
+              "assignee"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "status",
+            "description": [
+              "Status do action item (Pendente, Em andamento, Concluído)."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "tarefa",
+            "description": [
+              "Descrição clara da tarefa / ação combinada na reunião."
+            ],
+            "synonyms": [
+              "ação",
+              "item de ação",
+              "atividade"
+            ]
+          },
+          {
+            "column_name": "tipo_midia",
+            "description": [
+              "Tipo de reunião (Reunião Corporativa, Discovery/Cliente, Comitê Executivo, Post-mortem/Incidente, Workshop/Aula Técnica)."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "titulo_origem",
+            "description": [
+              "Título da reunião de origem do action item."
+            ],
+            "synonyms": [
+              "reunião",
+              "título"
+            ]
+          }
+        ]
+      },
+      {
+        "identifier": "workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_decisoes",
+        "description": [
+          "Registro histórico de decisões aprovadas em reuniões corporativas com contexto, impacto e participantes envolvidos."
+        ],
+        "column_configs": [
+          {
+            "column_name": "arquivo_origem",
+            "description": [
+              "Nome do arquivo de transcrição original."
+            ]
+          },
+          {
+            "column_name": "categoria_ia",
+            "description": [
+              "Categoria temática da reunião."
+            ],
+            "synonyms": [
+              "área",
+              "tema"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "contexto",
+            "description": [
+              "Contexto que motivou a decisão."
+            ]
+          },
+          {
+            "column_name": "data_processamento",
+            "description": [
+              "Timestamp do processamento na camada Gold."
+            ]
+          },
+          {
+            "column_name": "data_reuniao",
+            "description": [
+              "Data da reunião onde a decisão foi aprovada."
+            ]
+          },
+          {
+            "column_name": "decisao",
+            "description": [
+              "Descrição objetiva da decisão aprovada."
+            ],
+            "synonyms": [
+              "deliberação",
+              "aprovação"
+            ]
+          },
+          {
+            "column_name": "documento_id",
+            "exclude": true
+          },
+          {
+            "column_name": "impacto",
+            "description": [
+              "Impacto esperado da decisão no negócio ou arquitetura."
+            ]
+          },
+          {
+            "column_name": "participantes_envolvidos",
+            "description": [
+              "Array de participantes envolvidos na decisão."
+            ]
+          },
+          {
+            "column_name": "tipo_midia",
+            "description": [
+              "Tipo de reunião."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "titulo_origem",
+            "description": [
+              "Título da reunião onde a decisão foi tomada."
+            ],
+            "synonyms": [
+              "reunião"
+            ]
+          }
+        ]
+      },
+      {
+        "identifier": "workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_metricas_avaliacao",
+        "description": [
+          "Resultados da avaliação quantitativa da POC comparando a saída do ai_query + responseFormat contra o gabarito manual de 6 transcrições (precisão, recall, F1, taxa de JSON válido, latência e custo)."
+        ],
+        "column_configs": [
+          {
+            "column_name": "avaliado_em",
+            "description": [
+              "Timestamp da avaliação da POC."
+            ]
+          },
+          {
+            "column_name": "categoria_metrica",
+            "description": [
+              "Dimensão avaliada: Geral, Decisões, Pendências, Action Items ou Parsing de Falantes (Silver)."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "custo_medio_reuniao_usd",
+            "description": [
+              "Custo estimado em USD por reunião processada."
+            ]
+          },
+          {
+            "column_name": "custo_projecao_1000_usd",
+            "description": [
+              "Projeção de custo mensal para 1.000 reuniões em USD."
+            ]
+          },
+          {
+            "column_name": "f1_score",
+            "description": [
+              "F1-Score harmônico entre precisão e recall (0 a 1)."
+            ]
+          },
+          {
+            "column_name": "fn",
+            "description": [
+              "Falsos negativos (False Negatives)."
+            ]
+          },
+          {
+            "column_name": "fp",
+            "description": [
+              "Falsos positivos (False Positives)."
+            ]
+          },
+          {
+            "column_name": "latencia_media_seg",
+            "description": [
+              "Latência média por chamada ai_query em segundos."
+            ]
+          },
+          {
+            "column_name": "latencia_p50_seg",
+            "description": [
+              "Latência mediana (p50) em segundos."
+            ]
+          },
+          {
+            "column_name": "latencia_p95_seg",
+            "description": [
+              "Latência p95 em segundos."
+            ]
+          },
+          {
+            "column_name": "modelo_llm",
+            "description": [
+              "Endpoint Foundation Model usado no ai_query."
+            ]
+          },
+          {
+            "column_name": "precisao",
+            "description": [
+              "Precisão da extração (0 a 1; multiplique por 100 para percentual)."
+            ],
+            "synonyms": [
+              "precision"
+            ]
+          },
+          {
+            "column_name": "recall",
+            "description": [
+              "Recall/revocação da extração (0 a 1; multiplique por 100 para percentual)."
+            ]
+          },
+          {
+            "column_name": "taxa_json_valido",
+            "description": [
+              "Proporção de transcrições que retornaram JSON estritamente válido (0 a 1)."
+            ],
+            "synonyms": [
+              "json válido"
+            ]
+          },
+          {
+            "column_name": "total_transcricoes_gabarito",
+            "description": [
+              "Quantidade de transcrições com gabarito manual avaliadas."
+            ]
+          },
+          {
+            "column_name": "total_transcricoes_volume",
+            "description": [
+              "Quantidade total de transcrições processadas no Volume."
+            ]
+          },
+          {
+            "column_name": "tp",
+            "description": [
+              "Verdadeiros positivos (True Positives)."
+            ]
+          }
+        ]
+      },
+      {
+        "identifier": "workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_pendencias",
+        "description": [
+          "Pendências, bloqueios e dependências em aberto identificados nas transcrições de reuniões."
+        ],
+        "column_configs": [
+          {
+            "column_name": "arquivo_origem",
+            "description": [
+              "Nome do arquivo de transcrição original."
+            ]
+          },
+          {
+            "column_name": "categoria_ia",
+            "description": [
+              "Categoria temática da reunião."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "data_processamento",
+            "description": [
+              "Timestamp do processamento na camada Gold."
+            ]
+          },
+          {
+            "column_name": "data_reuniao",
+            "description": [
+              "Data da reunião onde a pendência foi levantada."
+            ]
+          },
+          {
+            "column_name": "descricao",
+            "description": [
+              "Descrição da pendência ou bloqueio em aberto."
+            ],
+            "synonyms": [
+              "bloqueio",
+              "impedimento",
+              "dependência"
+            ]
+          },
+          {
+            "column_name": "documento_id",
+            "exclude": true
+          },
+          {
+            "column_name": "impacto",
+            "description": [
+              "Impacto do bloqueio."
+            ]
+          },
+          {
+            "column_name": "responsavel_ou_area",
+            "description": [
+              "Área ou pessoa de quem a pendência depende."
+            ],
+            "synonyms": [
+              "área responsável",
+              "dependência"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "status",
+            "description": [
+              "Status atual da pendência (ex.: Pendente)."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "tipo_midia",
+            "description": [
+              "Tipo de reunião."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "titulo_origem",
+            "description": [
+              "Título da reunião de origem."
+            ]
+          }
+        ]
+      },
+      {
+        "identifier": "workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_transcricoes_catalogo",
+        "description": [
+          "Catálogo mestre com 1 linha por reunião processada: resumo executivo, falantes extraídos na Silver, categoria temática, contagens de decisões/pendências/action items, tokens e status de JSON válido."
+        ],
+        "column_configs": [
+          {
+            "column_name": "arquivo_origem",
+            "description": [
+              "Nome do arquivo no Unity Catalog Volume."
+            ]
+          },
+          {
+            "column_name": "categoria_ia",
+            "description": [
+              "Categoria temática classificada pelo modelo LLM."
+            ],
+            "synonyms": [
+              "tema",
+              "domínio"
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "data_processamento",
+            "description": [
+              "Timestamp do processamento na camada Gold."
+            ]
+          },
+          {
+            "column_name": "data_reuniao",
+            "description": [
+              "Data em que a reunião aconteceu."
+            ]
+          },
+          {
+            "column_name": "documento_id",
+            "exclude": true
+          },
+          {
+            "column_name": "duracao_estimada_min",
+            "description": [
+              "Duração da reunião em minutos."
+            ]
+          },
+          {
+            "column_name": "extracao_erro",
+            "description": [
+              "Mensagem de erro do ai_query (NULL quando bem-sucedido)."
+            ]
+          },
+          {
+            "column_name": "falantes",
+            "description": [
+              "Array de falantes extraídos deterministicamente na camada Silver."
+            ],
+            "synonyms": [
+              "participantes",
+              "speakers"
+            ]
+          },
+          {
+            "column_name": "falantes_texto",
+            "description": [
+              "Lista textual dos falantes separados por vírgula."
+            ]
+          },
+          {
+            "column_name": "ferramentas_tecnologias",
+            "description": [
+              "Ferramentas e tecnologias mencionadas na reunião."
+            ]
+          },
+          {
+            "column_name": "formato_arquivo",
+            "description": [
+              "Formato original do arquivo: vtt, srt ou txt."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "json_valido",
+            "description": [
+              "Indica se o retorno respeitou estritamente o JSON Schema do responseFormat."
+            ]
+          },
+          {
+            "column_name": "modelo_llm",
+            "description": [
+              "Endpoint usado no ai_query."
+            ]
+          },
+          {
+            "column_name": "qtd_action_items",
+            "description": [
+              "Total de action items extraídos da reunião."
+            ]
+          },
+          {
+            "column_name": "qtd_decisoes",
+            "description": [
+              "Total de decisões extraídas da reunião."
+            ]
+          },
+          {
+            "column_name": "qtd_falantes",
+            "description": [
+              "Quantidade de falantes distintos na reunião."
+            ]
+          },
+          {
+            "column_name": "qtd_pendencias",
+            "description": [
+              "Total de pendências/bloqueios extraídos da reunião."
+            ]
+          },
+          {
+            "column_name": "resumo_executivo",
+            "description": [
+              "Resumo executivo gerado pelo ai_query."
+            ]
+          },
+          {
+            "column_name": "tipo_midia",
+            "description": [
+              "Tipo da reunião."
+            ],
+            "enable_format_assistance": true,
+            "enable_entity_matching": true
+          },
+          {
+            "column_name": "titulo",
+            "description": [
+              "Título executivo da reunião."
+            ]
+          },
+          {
+            "column_name": "tokens_entrada_estimados",
+            "description": [
+              "Estimativa de tokens de entrada enviados ao LLM."
+            ]
+          },
+          {
+            "column_name": "tokens_saida_estimados",
+            "description": [
+              "Estimativa de tokens de saída retornados pelo LLM."
+            ]
+          },
+          {
+            "column_name": "total_palavras",
+            "description": [
+              "Quantidade total de palavras da transcrição limpa."
+            ]
+          },
+          {
+            "column_name": "total_turnos",
+            "description": [
+              "Total de turnos de fala identificados na transcrição."
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "instructions": {
+    "text_instructions": [
+      {
+        "id": "30000000000000000000000000000001",
+        "content": [
+          "Você é o assistente executivo da POC Meeting & Video Intelligence no Databricks Lakehouse.",
+          "Use gold_transcricoes_catalogo para visão geral de reuniões, resumos executivos, falantes e contagens.",
+          "Use gold_decisoes para decisões aprovadas, gold_pendencias para bloqueios/pendências em aberto e gold_action_items para tarefas com responsável, prazo e prioridade.",
+          "Use gold_metricas_avaliacao quando perguntarem sobre precisão, recall, F1, taxa de JSON válido, latência ou custo da POC.",
+          "Responda sempre em Português do Brasil de forma objetiva, apresentando tabelas ordenadas por data ou prioridade."
+        ]
+      }
+    ],
+    "example_question_sqls": [
+      {
+        "id": "20000000000000000000000000000001",
+        "question": [
+          "Quais action items de prioridade Alta estão pendentes e quem são os responsáveis?"
+        ],
+        "sql": [
+          "SELECT data_reuniao, titulo_origem, tarefa, responsavel, prazo, prioridade, status FROM workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_action_items WHERE prioridade = 'Alta' AND status = 'Pendente' ORDER BY data_reuniao, prazo"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000002",
+        "question": [
+          "Quantas reuniões, decisões, pendências e action items foram processados por categoria?"
+        ],
+        "sql": [
+          "SELECT categoria_ia, COUNT(*) AS total_reunioes, SUM(qtd_decisoes) AS total_decisoes, SUM(qtd_pendencias) AS total_pendencias, SUM(qtd_action_items) AS total_action_items FROM workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_transcricoes_catalogo GROUP BY categoria_ia ORDER BY total_reunioes DESC"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000003",
+        "question": [
+          "Quais pendências e bloqueios estão em aberto?"
+        ],
+        "sql": [
+          "SELECT data_reuniao, titulo_origem, categoria_ia, descricao, responsavel_ou_area, impacto FROM workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_pendencias WHERE status = 'Pendente' ORDER BY data_reuniao DESC"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000004",
+        "question": [
+          "Quais decisões foram aprovadas nas reuniões de Engenharia de Dados & Lakehouse?"
+        ],
+        "sql": [
+          "SELECT data_reuniao, titulo_origem, decisao, impacto FROM workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_decisoes WHERE categoria_ia ILIKE '%Lakehouse%' ORDER BY data_reuniao DESC"
+        ]
+      },
+      {
+        "id": "20000000000000000000000000000005",
+        "question": [
+          "Qual foi a precisão, recall, taxa de JSON válido, latência média e custo estimado da POC?"
+        ],
+        "sql": [
+          "SELECT categoria_metrica, ROUND(precisao * 100, 1) AS precisao_pct, ROUND(recall * 100, 1) AS recall_pct, ROUND(f1_score * 100, 1) AS f1_pct, ROUND(taxa_json_valido * 100, 1) AS json_valido_pct, latencia_media_seg, custo_medio_reuniao_usd, custo_projecao_1000_usd FROM workspace.dev_vitortesteestudos_meeting_intelligence_poc.gold_metricas_avaliacao ORDER BY categoria_metrica"
+        ]
+      }
+    ]
+  }
+}

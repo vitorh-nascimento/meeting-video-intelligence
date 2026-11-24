@@ -21,6 +21,7 @@ const TEMPLATES: ExtractionTemplate[] = [
   "Reunião Corporativa",
   "Aula/Vídeo Técnico",
   "Discovery/Cliente",
+  "Sessão Legislativa / Política",
 ];
 
 const STAGES = [

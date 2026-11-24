@@ -1,72 +1,52 @@
-# Deploy da POC no Databricks Lakehouse (DAB + Lakeflow SDP + AI Functions)
+# Deploy da POC no Databricks Lakehouse (DAB + Lakeflow SDP + `ai_query` + Genie Space)
 
-Este diretório contém um **Databricks Asset Bundle (DAB)** 100% independente e parametrizável, sem nenhuma credencial, URL ou schema pessoal hardcoded.
+Este diretório contém um **Databricks Asset Bundle (DAB)** parametrizável implementando todas as etapas da POC de sumarização de reuniões no Databricks Lakehouse:
 
-## Pré-requisitos
-1. [Databricks CLI](https://docs.databricks.com/dev-tools/cli/install.html) (`>= 0.230`).
-2. Workspace Databricks com **Unity Catalog**, **Serverless Compute** e **Databricks AI Functions** habilitados.
-3. Perfil configurado localmente:
-   ```bash
-   databricks auth login --host https://<seu-workspace>.cloud.databricks.com --profile meu-perfil
-   ```
+## Arquitetura Medalhão & Avaliação
+- **Dados Fictícios (`poc_data/`):** gerador reproduzível de **18 transcrições corporativas** (`.vtt` Teams, `.srt` Zoom/Whisper e `.txt` Meet) prontas para upload no Unity Catalog Volume `/Volumes/<catalog>/<schema>/raw_transcripts`.
+- **Bronze (`bronze_transcricoes_raw`):** Streaming Table em Lakeflow SDP SQL com **`STREAM read_files(..., format => 'text', wholeText => true)`**.
+- **Silver (`silver_transcricoes_limpas`):** Limpeza determinística de timestamps/WEBVTT/HTML + **parsing de falantes (`falantes`, `qtd_falantes`, `total_turnos`)** e **metadados** (`data_reuniao`, `formato_arquivo`, `titulo_metadado`, `tipo_midia`, `duracao_estimada_min`, `tokens_entrada_estimados`).
+- **Gold (`gold_tabelas_analiticas.sql`):**
+  - `gold_transcricoes_extracao`: Streaming Table que invoca **`ai_query`** com **`responseFormat` (JSON Schema estrito)** e `failOnError => false` **1 única vez por transcrição**, registrando `json_valido` e `extracao_erro`.
+  - Materialized Views analíticas com Liquid Clustering:
+    - `gold_transcricoes_catalogo`
+    - `gold_decisoes`
+    - `gold_pendencias`
+    - `gold_action_items`
+- **Avaliação Quantitativa (`eval/`):**
+  - Gabarito manual de **6 transcrições** (`eval/gabarito_manual.json` + tabela `eval_gabarito_manual`).
+  - Script `eval/evaluate_poc.py` medindo **precisão, recall, F1, taxa de JSON válido, latência (média/p50/p95) e custo estimado (DBU/USD)**, salvando em `gold_metricas_avaliacao` e gerando `eval/RELATORIO_AVALIACAO_POC.md`.
+- **Genie Space (`genie/create_genie_space.py`):** cria e valida um **Genie Space** dedicado conectado às 5 tabelas Gold (`gold_transcricoes_catalogo`, `gold_decisoes`, `gold_pendencias`, `gold_action_items` e `gold_metricas_avaliacao`).
 
-## Arquitetura Medalhão
-- **Landing Zone (Volume UC):** `/Volumes/<catalog>/<schema>/<volume_name>`
-- **Bronze (`bronze_transcricoes_raw`):** Streaming Table com Auto Loader (`cloudFiles`) lendo `.srt`, `.vtt`, `.txt`, `.json`.
-- **Silver (`silver_transcricoes_enriquecidas`):** Higienização de timestamps/HTML + `ai_classify` (v2.0), `ai_summarize` e `ai_extract` (v2.0 com JSON schema estruturado).
-- **Gold (Materialized Views):**
-  - `gold_transcricoes_catalogo`
-  - `gold_action_items`
-  - `gold_decisoes`
-  - `gold_pendencias`
+## Passo a Passo Reproduzível
 
-## Passo a Passo de Deploy
+```powershell
+# 1. Gerar as 18 transcrições fictícias
+.venv\Scripts\python.exe databricks\poc_data\generate_transcripts.py
 
-```bash
+# 2. Validar e fazer deploy do DAB (Schema, Volume e Pipeline Serverless)
 cd databricks
+databricks bundle validate -t dev --profile <SEU_PERFIL>
+databricks bundle deploy -t dev --profile <SEU_PERFIL>
 
-# 1. Validar o bundle parametrizando catalog/schema do seu ambiente
-databricks bundle validate --strict -t dev \
-  --profile meu-perfil \
-  --var="catalog=workspace" \
-  --var="schema=meeting_intelligence_dev"
+# 3. Subir as 18 transcrições no Volume do Unity Catalog
+databricks fs cp -r poc_data/transcripts/ dbfs:/Volumes/<CATALOG>/<SCHEMA_DEPLOYADO>/raw_transcripts/ --overwrite --profile <SEU_PERFIL>
 
-# 2. Fazer deploy do Schema, Volume e Pipeline Serverless
-databricks bundle deploy -t dev \
-  --profile meu-perfil \
-  --var="catalog=workspace" \
-  --var="schema=meeting_intelligence_dev"
+# 4. Executar a pipeline Lakeflow Medallion
+databricks bundle run meeting_intelligence_pipeline -t dev --profile <SEU_PERFIL>
 
-# 3. Subir uma transcrição gerada pelo app local (ou via botão "Enviar para Databricks" na UI)
-databricks fs cp ../data/exemplo.srt \
-  dbfs:/Volumes/workspace/meeting_intelligence_dev/raw_transcripts/exemplo.srt \
-  --profile meu-perfil
+# 5. Rodar avaliação contra o gabarito de 6 transcrições (precisão, recall, JSON válido, latência e custo)
+cd ..
+.venv\Scripts\python.exe databricks\eval\evaluate_poc.py `
+  --profile <SEU_PERFIL> `
+  --warehouse <WAREHOUSE_ID> `
+  --catalog <CATALOG> `
+  --schema <SCHEMA_DEPLOYADO>
 
-# 4. Executar a pipeline Lakeflow
-databricks bundle run meeting_intelligence_pipeline -t dev \
-  --profile meu-perfil \
-  --var="catalog=workspace" \
-  --var="schema=meeting_intelligence_dev"
-```
-
-## Consultas de Validação no SQL Editor / Genie Space
-
-```sql
--- Catálogo geral
-SELECT titulo, tipo_midia, categoria_ia, resumo_executivo, ferramentas_tecnologias
-FROM <catalog>.<schema>.gold_transcricoes_catalogo
-ORDER BY data_processamento DESC;
-
--- Plano de ação consolidado
-SELECT titulo_origem, tarefa, responsavel, prazo, prioridade, status
-FROM <catalog>.<schema>.gold_action_items
-WHERE status = 'Pendente'
-ORDER BY prioridade;
-
--- Decisões e pendências
-SELECT titulo_origem, decisao, impacto, participantes_envolvidos
-FROM <catalog>.<schema>.gold_decisoes;
-
-SELECT titulo_origem, descricao, responsavel_ou_area, impacto, status
-FROM <catalog>.<schema>.gold_pendencias;
+# 6. Criar e validar o Genie Space conectado às tabelas Gold
+.venv\Scripts\python.exe databricks\genie\create_genie_space.py `
+  --profile <SEU_PERFIL> `
+  --warehouse <WAREHOUSE_ID> `
+  --catalog <CATALOG> `
+  --schema <SCHEMA_DEPLOYADO>
 ```

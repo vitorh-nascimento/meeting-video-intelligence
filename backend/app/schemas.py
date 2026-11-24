@@ -15,6 +15,7 @@ class MediaType(str, Enum):
     VIDEO_TECNICO = "Vídeo Técnico/Aula"
     AUDIO_PODCAST = "Áudio/Podcast"
     ENTREVISTA = "Entrevista"
+    SESSAO_LEGISLATIVA = "Sessão Legislativa"
     OUTRO = "Outro"
 
 
@@ -22,6 +23,7 @@ class ExtractionTemplate(str, Enum):
     REUNIAO_CORPORATIVA = "Reunião Corporativa"
     AULA_VIDEO_TECNICO = "Aula/Vídeo Técnico"
     DISCOVERY_CLIENTE = "Discovery/Cliente"
+    SESSAO_LEGISLATIVA = "Sessão Legislativa / Política"
 
 
 class PriorityLevel(str, Enum):
@@ -215,6 +217,10 @@ class ChatAnswerResponse(BaseModel):
 
 class DatabricksPushRequest(BaseModel):
     run_pipeline: bool = False
+
+
+class ReanalyzeDocumentRequest(BaseModel):
+    template: str = ExtractionTemplate.REUNIAO_CORPORATIVA.value
 
 
 class SettingsUpdateRequest(BaseModel):

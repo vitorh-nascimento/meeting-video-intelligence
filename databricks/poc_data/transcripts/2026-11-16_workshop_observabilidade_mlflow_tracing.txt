@@ -1,0 +1,12 @@
+Reunião: Workshop Técnico — Observabilidade de Agentes IA com MLflow Tracing
+Data: 2026-11-16
+Duração: 55 min
+Participantes: Helena Prado, Mateus Vieira
+---
+
+[00:00:10] Helena Prado: Hoje vamos padronizar como rastreamos latência, chamadas de ferramentas e qualidade dos agentes GenAI com MLflow Tracing.
+[00:00:35] Mateus Vieira: Com o autolog do MLflow conseguimos inspecionar cada span de retrieval e geração e avaliar alucinações automaticamente.
+[00:01:00] Helena Prado: Decisão de engenharia: todos os agentes em produção devem enviar traces para o experimento central no Databricks MLflow e rodar scorers de qualidade semanalmente.
+[00:01:29] Mateus Vieira: Pendência: precisamos definir o limite de retenção de prompts com dados sensíveis nos traces junto à Segurança da Informação.
+[00:01:55] Helena Prado: Mateus, publique o pacote interno de instrumentação MLflow Tracing com mascaramento de PII até 25/11/2026, prioridade Alta.
+[00:02:20] Helena Prado: Vou validar a política de retenção de traces com Segurança até 23/11/2026, prioridade Média.

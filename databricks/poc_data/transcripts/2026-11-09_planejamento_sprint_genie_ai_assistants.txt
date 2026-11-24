@@ -1,0 +1,18 @@
+Reunião: Planejamento Sprint 24 — POC de Sumarização de Reuniões com AI Functions
+Data: 2026-11-09
+Duração: 45 min
+Participantes: Henrique Duarte, Larissa Monteiro, Vitor Almeida
+---
+
+[00:00:10] Vitor Almeida: Pessoal, nesta Sprint 24 vamos fechar a POC de sumarização de reuniões no Databricks para demonstrar à diretoria de Engenharia.
+[00:00:37] Larissa Monteiro: Precisamos garantir que o pipeline use read_files na Bronze, faça limpeza e parsing de falantes na Silver e use ai_query com responseFormat na Gold.
+[00:01:06] Vitor Almeida: Exato. Fica decidido que a extração estruturada na Gold usará ai_query com responseFormat JSON Schema estrito no endpoint databricks-meta-llama-3-3-70b-instruct.
+[00:01:32] Henrique Duarte: E para provar qualidade com dados, precisamos de um gabarito manual com 6 transcrições e medir precisão, recall, taxa de JSON válido, latência e custo.
+[00:02:01] Vitor Almeida: Segunda decisão confirmada: toda demonstração de LLM em produção passará por avaliação quantitativa com gabarito antes de ir para usuários finais.
+[00:02:28] Larissa Monteiro: Temos uma pendência importante: ainda falta a equipe de Compliance validar se gravações de reuniões com clientes externos podem ser processadas em endpoints pay-per-token.
+[00:02:57] Henrique Duarte: Também está pendente a liberação do grupo de usuários piloto no Unity Catalog para testar o Genie Space da POC.
+[00:03:24] Vitor Almeida: Então vamos distribuir as tarefas. Larissa, implemente as camadas Bronze com read_files, Silver com parsing de falantes e Gold com ai_query e responseFormat até 15/11/2026, prioridade Alta.
+[00:03:54] Larissa Monteiro: Perfeito, já subo tudo via Databricks Asset Bundle.
+[00:04:15] Vitor Almeida: Henrique, monte o gabarito manual de 6 transcrições e rode o script de métricas de precisão, recall, latência e custo até 17/11/2026, prioridade Alta.
+[00:04:44] Henrique Duarte: Pode deixar, gero o relatório completo e salvo em tabela Gold.
+[00:05:06] Vitor Almeida: Eu vou configurar o Genie Space conectado às tabelas Gold e solicitar o parecer de Compliance até 18/11/2026, prioridade Média.

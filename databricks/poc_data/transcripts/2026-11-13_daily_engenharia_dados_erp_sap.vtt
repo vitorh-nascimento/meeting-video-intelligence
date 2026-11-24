@@ -1,0 +1,26 @@
+WEBVTT
+NOTE Reunião: Sync Engenharia de Dados — Ingestão CDC do ERP SAP | Data: 2026-11-13 | Duração: 25 min
+
+cue-001
+00:00:05.000 --> 00:00:22.000
+<v Fábio Cunha>A extração incremental das tabelas VBAK e VBAP rodou sem falhas nas últimas 72 horas.</v>
+
+cue-002
+00:00:25.000 --> 00:00:44.000
+<v Natália Borges>Porém a tabela de centro de custos ainda vem em snapshot completo de 18 milhões de linhas toda noite.</v>
+
+cue-003
+00:00:47.000 --> 00:01:09.000
+<v Fábio Cunha>Vamos decidir: manter snapshot diário com Auto CDC FROM SNAPSHOT apenas para tabelas mestras pequenas e habilitar CDC real na tabela de centro de custos.</v>
+
+cue-004
+00:01:12.000 --> 00:01:31.000
+<v Natália Borges>Fica pendente a equipe Basis do SAP liberar permissão de leitura no log de mudanças para o usuário técnico.</v>
+
+cue-005
+00:01:34.000 --> 00:01:52.000
+<v Fábio Cunha>Natália, abra o ticket de permissão no SAP Basis e documente a volumetria até 16/11/2026, prioridade Alta.</v>
+
+cue-006
+00:01:55.000 --> 00:02:13.000
+<v Fábio Cunha>Eu vou configurar os testes de reconciliação de contagem entre SAP e Silver até 19/11/2026, prioridade Média.</v>

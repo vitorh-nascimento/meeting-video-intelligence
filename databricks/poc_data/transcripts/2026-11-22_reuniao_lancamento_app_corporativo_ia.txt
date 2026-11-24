@@ -1,0 +1,12 @@
+Reunião: Go/No-Go — Lançamento Interno do Portal Meeting & Video Intelligence
+Data: 2026-11-22
+Duração: 34 min
+Participantes: Lucas Ferreira, Marina Souza, Vitor Almeida
+---
+
+[00:00:10] Vitor Almeida: Pessoal, estamos prontos para o lançamento interno do portal Meeting & Video Intelligence para os times de Engenharia e Produto.
+[00:00:37] Marina Souza: Um ponto essencial pedido pelos gestores é ter uma tela inicial clara de tutorial no portal explicando como usar no dia a dia e como usar em ambiente empresarial com segurança.
+[00:01:09] Vitor Almeida: Totalmente de acordo! Decisão de lançamento: incluir a tela inicial de Tutorial & Guia Empresarial como página padrão do portal, detalhando modo offline para reuniões sigilosas e sincronização com Databricks.
+[00:01:41] Lucas Ferreira: Fica pendente apenas definir a agenda da sessão de treinamento ao vivo de 30 minutos com os tech leads.
+[00:02:07] Vitor Almeida: Vou publicar a tela inicial de tutorial no portal e validar o build de produção até 24/11/2026, prioridade Alta.
+[00:02:33] Vitor Almeida: Marina, agende o treinamento ao vivo com os tech leads e compartilhe o link do Genie Space até 26/11/2026, prioridade Média.

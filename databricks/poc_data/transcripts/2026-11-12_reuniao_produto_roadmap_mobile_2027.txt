@@ -1,0 +1,12 @@
+Reunião: Revisão de Roadmap Produto Mobile — Q1 2027
+Data: 2026-11-12
+Duração: 50 min
+Participantes: Aline Vasconcelos, Gabriel Moura
+---
+
+[00:00:10] Aline Vasconcelos: Trouxemos os resultados da pesquisa com 1.200 clientes: 64% pedem modo offline no app de campo.
+[00:00:35] Gabriel Moura: Se priorizarmos o modo offline no Q1, precisaremos adiar o redesenho da tela de perfil para o Q2.
+[00:01:01] Aline Vasconcelos: Fica decidido: modo offline com sincronização incremental será o épico número 1 do Q1 2027 e o redesenho de perfil vai para o Q2.
+[00:01:30] Gabriel Moura: Temos uma pendência de arquitetura sobre resolução de conflitos quando dois técnicos editam a mesma ordem de serviço offline.
+[00:01:56] Aline Vasconcelos: Gabriel, escreva a RFC de sincronização offline e resolução de conflitos até 21/11/2026, prioridade Alta.
+[00:02:20] Aline Vasconcelos: Vou atualizar o roadmap executivo e comunicar os stakeholders comerciais até 19/11/2026, prioridade Média.

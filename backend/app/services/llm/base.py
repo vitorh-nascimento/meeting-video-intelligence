@@ -35,6 +35,20 @@ TEMPLATE_GUIDANCE: Dict[str, str] = {
         "Foque fortemente em dores do cliente, requisitos funcionais e não-funcionais, restrições, "
         "dúvidas em aberto (pendências), compromissos assumidos, riscos de escopo e plano de ação de proposta/POC."
     ),
+    "Sessão Legislativa / Política": (
+        "Adote rigorosamente postura jornalística neutra, factual e apartidária (sem juízo de valor). "
+        "Separe cada proposição votada (PL, PEC, MP, Requerimento, Moção) como um item em `decisoes` informando "
+        "número do projeto, resultado oficial (Aprovado/Rejeitado/Adiado), placar ou unanimidade quando citados, "
+        "e impacto prático para a população. "
+        "Registre em `pendencias` as indicações de bairros, cobranças ao Executivo, pedidos de vista, projetos adiados "
+        "e demandas em aberto indicando a secretaria/órgão responsável em `responsavel_ou_area`. "
+        "Registre em `action_items` os encaminhamentos regimentais (envio à Prefeitura, comissões, prazos legais). "
+        "Em `informacoes_chave.insights`, destaque os principais temas debatidos e argumentos favoráveis/contrários "
+        "SEMPRE atribuídos explicitamente ao parlamentar ou autor que falou. "
+        "Em `ata_markdown`, redija um Boletim Legislativo em formato de nota jornalística clara com: "
+        "Manchete factual, Resumo da Sessão, O que foi votado (projetos e requerimentos), Principais demandas e indicações, "
+        "e Encaminhamentos regimentais."
+    ),
 }
 
 

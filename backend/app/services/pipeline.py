@@ -40,7 +40,14 @@ from app.services.transcribers import get_transcriber
 
 def _infer_media_type(source_type: str, template: str, ref: str) -> str:
     lower_ref = (ref or "").lower()
-    if "aula" in template.lower() or "youtube" in lower_ref or "youtu.be" in lower_ref:
+    lower_tpl = (template or "").lower()
+    if (
+        "legislativa" in lower_tpl
+        or "política" in lower_tpl
+        or any(k in lower_ref for k in ["camara", "câmara", "senado", "sessao", "sessão", "plenario", "plenário"])
+    ):
+        return MediaType.SESSAO_LEGISLATIVA.value
+    if "aula" in lower_tpl or "youtube" in lower_ref or "youtu.be" in lower_ref:
         return MediaType.VIDEO_TECNICO.value
     if any(ext in lower_ref for ext in [".mp3", ".m4a", ".wav", ".ogg", ".aac"]):
         return MediaType.AUDIO_PODCAST.value
@@ -354,6 +361,44 @@ class IngestionPipeline:
         if run_pipeline:
             result["pipeline"] = trigger_lakeflow_pipeline(settings)
         return result
+
+    def reanalyze_document(self, doc_id: str, *, template: str) -> Dict[str, Any]:
+        """Re-executa apenas a camada LLM com outro template sobre a transcrição já salva (sem re-transcrever áudio)."""
+        doc = self.db.get_document(doc_id)
+        if not doc:
+            raise FileNotFoundError(f"Documento {doc_id} não encontrado.")
+        clean_text = (doc.get("clean_text") or "").strip()
+        if not clean_text:
+            raise ValueError("Documento sem texto de transcrição salvo para reanálise.")
+
+        settings = self.db.get_settings(masked=False)
+        llm = get_llm_provider(settings, allow_heuristic_fallback=True)
+        default_media_type = _infer_media_type(
+            str(doc.get("source_type", "file")),
+            template,
+            str(doc.get("title") or doc.get("source_ref") or ""),
+        )
+        analysis = llm.analyze_transcript(
+            transcript_text=clean_text,
+            title=str(doc.get("title") or "Documento"),
+            template=template,
+            categories=settings.get("categories") or [],
+            glossary=settings.get("glossary_terms") or [],
+            language=str(doc.get("language") or "pt-BR"),
+            duration_seconds=int(doc.get("duration_seconds") or 0),
+            duration_formatted=str(doc.get("duration_formatted") or "00:00:00"),
+            word_count=int(doc.get("word_count") or 0),
+            default_media_type=default_media_type,
+        )
+        updated = self.db.update_document_analysis(
+            doc_id,
+            template=template,
+            llm_provider=llm.provider_name,
+            analysis=analysis.model_dump(),
+        )
+        if not updated:
+            raise FileNotFoundError(f"Documento {doc_id} não encontrado ao atualizar análise.")
+        return updated
 
 
 pipeline = IngestionPipeline()

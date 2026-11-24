@@ -90,14 +90,17 @@ meeting-video-intelligence/
 ├── frontend/                               # React 19 + TypeScript + Vite 6 + Tailwind CSS v4
 │   └── src/
 │       ├── api/client.ts                   # Cliente HTTP tipado
-│       └── components/                     # IngestPanel, LibraryView, DocumentDetail, TranscriptChat, SettingsView
-├── databricks/                             # Databricks Asset Bundle (DAB) + Lakeflow SDP Medallion
-│   ├── databricks.yml                      # Definição parametrizável (Schema, Volume, Pipeline Serverless)
-│   ├── README_DEPLOY.md                    # Guia passo a passo de deploy no workspace Databricks
+│       └── components/                     # HomeGuideView (Tutorial & Guia Empresarial), IngestPanel, LibraryView, DocumentDetail, TranscriptChat, SettingsView
+├── databricks/                             # Databricks Asset Bundle (DAB) + Lakeflow SDP Medallion + Eval + Genie
+│   ├── databricks.yml                      # Definição parametrizável (Schema, Volume, Pipeline Serverless, ai_query_endpoint)
+│   ├── README_DEPLOY.md                    # Guia passo a passo de deploy, avaliação e Genie Space
+│   ├── poc_data/                           # Gerador reproduzível de 18 transcrições fictícias (.vtt/.srt/.txt)
+│   ├── eval/                               # Gabarito manual (6 transcrições) + script de métricas (P/R/F1, JSON válido, latência, custo)
+│   ├── genie/                              # Criação e validação automatizada do Genie Space dedicado
 │   └── src/pipelines/meeting_intelligence/transformations/
-│       ├── bronze_transcricoes.py          # Auto Loader (cloudFiles)
-│       ├── silver_transcricoes.py          # Limpeza + AI Functions v2.0 (ai_classify, ai_summarize, ai_extract)
-│       └── gold_tabelas_analiticas.py      # 4 Materialized Views com Liquid Clustering
+│       ├── bronze_transcricoes.sql         # Ingestão incremental via STREAM read_files()
+│       ├── silver_transcricoes.sql         # Limpeza + parsing determinístico de falantes (speakers) e metadados
+│       └── gold_tabelas_analiticas.sql     # Extração via ai_query() + responseFormat (JSON Schema) + 4 MVs Gold
 └── tests/                                  # Suíte Pytest (parser, fallback/chunking, schema LLM, API E2E)
 ```
 
@@ -194,11 +197,14 @@ $env:PYTHONPATH = "backend"
 
 ## Deploy da POC no Databricks Lakehouse
 
-A pasta [`databricks/`](databricks/README_DEPLOY.md) contém um **Databricks Asset Bundle (DAB)** 100% independente e parametrizável (`catalog`, `schema`, `volume_name`) implementando a arquitetura Medallion serverless com **Lakeflow Spark Declarative Pipelines** e **Databricks AI Functions**:
+A pasta [`databricks/`](databricks/README_DEPLOY.md) contém um **Databricks Asset Bundle (DAB)** 100% independente e parametrizável (`catalog`, `schema`, `volume_name`, `ai_query_endpoint`) implementando a arquitetura Medallion serverless com **Lakeflow Spark Declarative Pipelines**, **avaliação com gabarito** e **Genie Space**:
 
-- **Bronze:** `bronze_transcricoes_raw` (Auto Loader `cloudFiles`)
-- **Silver:** `silver_transcricoes_enriquecidas` (Limpeza + `ai_classify`, `ai_summarize`, `ai_extract` v2.0 com JSON schema estruturado)
-- **Gold:** `gold_transcricoes_catalogo`, `gold_action_items`, `gold_decisoes`, `gold_pendencias`
+- **Dados Fictícios:** 18 transcrições corporativas (`.vtt`, `.srt`, `.txt`) geradas via `databricks/poc_data/generate_transcripts.py`
+- **Bronze:** `bronze_transcricoes_raw` (`STREAM read_files(...)`)
+- **Silver:** `silver_transcricoes_limpas` (Limpeza + parsing determinístico de falantes, turnos e metadados)
+- **Gold:** `gold_transcricoes_extracao` (`ai_query` + `responseFormat` JSON Schema estrito) → `gold_transcricoes_catalogo`, `gold_decisoes`, `gold_pendencias`, `gold_action_items`
+- **Avaliação:** gabarito manual de 6 transcrições (`databricks/eval/gabarito_manual.json`) + `databricks/eval/evaluate_poc.py` (precisão, recall, F1, taxa de JSON válido, latência e custo salvos em `gold_metricas_avaliacao` e `databricks/eval/RELATORIO_AVALIACAO_POC.md`)
+- **Genie Space:** `databricks/genie/create_genie_space.py` conectado às tabelas Gold
 
 Consulte o guia passo a passo em [`databricks/README_DEPLOY.md`](databricks/README_DEPLOY.md).
 

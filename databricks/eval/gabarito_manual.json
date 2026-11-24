@@ -1,0 +1,206 @@
+{
+  "descricao": "Gabarito manual (ground truth) de 6 transcrições corporativas (2 .vtt, 2 .srt, 2 .txt) para avaliação quantitativa da POC de sumarização com ai_query + responseFormat.",
+  "versao": "1.0",
+  "data_criacao": "2026-11-23",
+  "total_transcricoes_gabarito": 6,
+  "transcricoes": [
+    {
+      "arquivo_origem": "2026-11-02_reuniao_migracao_lakehouse_medallion.vtt",
+      "data_reuniao": "2026-11-02",
+      "falantes_esperados": ["Marina Souza", "Rafael Lima", "Camila Rocha", "Diego Martins"],
+      "decisoes": [
+        "Implementar todas as novas pipelines de vendas e estoque em Lakeflow Serverless usando Liquid Clustering nas tabelas Gold.",
+        "Padronizar a camada Bronze com ingestão incremental via read_files a partir de Volumes do Unity Catalog."
+      ],
+      "pendencias": [
+        "Aguardando time de Infraestrutura liberar Private Link entre a VPC do ERP SAP e o workspace Databricks.",
+        "Validação jurídica pendente sobre período de retenção de 7 anos para dados fiscais no Delta Lake."
+      ],
+      "action_items": [
+        {
+          "tarefa": "Criar o template do Databricks Asset Bundle com as camadas Bronze, Silver e Gold",
+          "responsavel": "Rafael Lima",
+          "prazo": "10/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Escalar chamado do Private Link com equipe de Redes e trazer previsão de entrega",
+          "responsavel": "Diego Martins",
+          "prazo": "06/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Documentar estratégia de Liquid Clustering e governança de retenção na wiki de Arquitetura",
+          "responsavel": "Camila Rocha",
+          "prazo": "14/11/2026",
+          "prioridade": "Média"
+        }
+      ]
+    },
+    {
+      "arquivo_origem": "2026-11-03_reuniao_comite_finops_nuvem_q4.srt",
+      "data_reuniao": "2026-11-03",
+      "falantes_esperados": ["Lucas Ferreira", "Beatriz Mendes", "Thiago Alves"],
+      "decisoes": [
+        "Habilitar auto-termination obrigatório de 15 minutos em todos os clusters interativos e migrar jobs de ETL noturnos para Serverless Compute.",
+        "Implementar alertas de orçamento no Unity Catalog e dashboard FinOps com gatilho em 80% do budget mensal."
+      ],
+      "pendencias": [
+        "Time de Ciência de Dados ainda não justificou a necessidade de manter duas instâncias GPU ligadas 24x7 em homologação.",
+        "Definição de tags obrigatórias de centro de custo pendente junto à Controladoria para rateio por diretoria."
+      ],
+      "action_items": [
+        {
+          "tarefa": "Aplicar política de cluster com auto-termination de 15 minutos em dev e homologação",
+          "responsavel": "Beatriz Mendes",
+          "prazo": "07/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Construir painel FinOps usando system.billing.usage com alerta em 80% do orçamento",
+          "responsavel": "Thiago Alves",
+          "prazo": "12/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Cobrar lista de centros de custo da Controladoria",
+          "responsavel": "Lucas Ferreira",
+          "prazo": "09/11/2026",
+          "prioridade": "Média"
+        }
+      ]
+    },
+    {
+      "arquivo_origem": "2026-11-04_reuniao_governanca_unity_catalog_lgpd.txt",
+      "data_reuniao": "2026-11-04",
+      "falantes_esperados": ["Fernanda Costa", "Gustavo Pereira", "Juliana Nunes"],
+      "decisoes": [
+        "Aplicar Column Masks nativas no Unity Catalog em todas as colunas de PII vinculadas ao grupo pii_authorized_analysts.",
+        "Ativar Row-Level Security por código de filial nas tabelas Gold de clientes e pedidos."
+      ],
+      "pendencias": [
+        "Provedor de identidade Entra ID ainda não sincronizou via SCIM os grupos regionais de vendas com a conta Databricks.",
+        "Aprovação pendente do DPO sobre o termo de responsabilidade para exportação de dados em CSV."
+      ],
+      "action_items": [
+        {
+          "tarefa": "Implementar funções SQL de Column Mask para CPF, e-mail e telefone nas 14 tabelas",
+          "responsavel": "Gustavo Pereira",
+          "prazo": "13/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Configurar filtro de Row-Level Security nas tabelas Gold de clientes e pedidos",
+          "responsavel": "Juliana Nunes",
+          "prazo": "16/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Agendar revisão com o DPO e cobrar time de IAM sobre SCIM do Entra ID",
+          "responsavel": "Fernanda Costa",
+          "prazo": "08/11/2026",
+          "prioridade": "Alta"
+        }
+      ]
+    },
+    {
+      "arquivo_origem": "2026-11-05_discovery_cliente_portal_selfservice_bi.vtt",
+      "data_reuniao": "2026-11-05",
+      "falantes_esperados": ["Carla Oliveira", "Eduardo Santos", "Patrícia Gomes"],
+      "decisoes": [
+        "Criar piloto de Genie Space focado nos 12 gerentes comerciais regionais.",
+        "Publicar uma Metric View oficial para receita líquida e margem bruta."
+      ],
+      "pendencias": [
+        "Tabela de metas por região de 2027 ainda não consolidada, aguardando aprovação da Vice-Presidência.",
+        "Validar se os gerentes comerciais possuem licença de acesso ao Databricks SQL para usar o Genie."
+      ],
+      "action_items": [
+        {
+          "tarefa": "Publicar Metric View de receita líquida e margem bruta e configurar Genie Space piloto",
+          "responsavel": "Patrícia Gomes",
+          "prazo": "18/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Compartilhar dicionário de KPIs comerciais e lista dos 12 gerentes participantes do piloto",
+          "responsavel": "Eduardo Santos",
+          "prazo": "10/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Confirmar acessos Databricks SQL dos 12 gerentes com o time de TI",
+          "responsavel": "Carla Oliveira",
+          "prazo": "12/11/2026",
+          "prioridade": "Média"
+        }
+      ]
+    },
+    {
+      "arquivo_origem": "2026-11-06_postmortem_incidente_pipeline_streaming.srt",
+      "data_reuniao": "2026-11-06",
+      "falantes_esperados": ["André Carvalho", "Renata Barros", "Bruno Teixeira"],
+      "decisoes": [
+        "Adotar schemaEvolutionMode rescue em todas as tabelas Bronze de eventos com envio de registros corrompidos para quarentena.",
+        "Adicionar contrato de dados automatizado no CI do microserviço de checkout para bloquear mudanças quebradoras."
+      ],
+      "pendencias": [
+        "Falta definição de SLA oficial de atraso máximo com o time de Logística para calibrar o alerta de lag.",
+        "Time de Checkout ainda não informou a data para remover o campo legado que causou conflito de tipagem."
+      ],
+      "action_items": [
+        {
+          "tarefa": "Habilitar schemaEvolutionMode rescue e tabela de quarentena com alerta de lag no Slack",
+          "responsavel": "Bruno Teixeira",
+          "prazo": "11/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Implementar validação de JSON Schema no pipeline CI do checkout junto ao time de pagamentos",
+          "responsavel": "Renata Barros",
+          "prazo": "19/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Alinhar SLA máximo de latência com a gerência de Logística",
+          "responsavel": "André Carvalho",
+          "prazo": "13/11/2026",
+          "prioridade": "Média"
+        }
+      ]
+    },
+    {
+      "arquivo_origem": "2026-11-09_planejamento_sprint_genie_ai_assistants.txt",
+      "data_reuniao": "2026-11-09",
+      "falantes_esperados": ["Vitor Almeida", "Larissa Monteiro", "Henrique Duarte"],
+      "decisoes": [
+        "Usar ai_query com responseFormat JSON Schema estrito no endpoint databricks-meta-llama-3-3-70b-instruct para extração estruturada na camada Gold.",
+        "Exigir avaliação quantitativa com gabarito antes de liberar qualquer demonstração de LLM para usuários finais."
+      ],
+      "pendencias": [
+        "Compliance ainda precisa validar se gravações de reuniões com clientes externos podem ser processadas em endpoints pay-per-token.",
+        "Liberação pendente do grupo de usuários piloto no Unity Catalog para testar o Genie Space da POC."
+      ],
+      "action_items": [
+        {
+          "tarefa": "Implementar camadas Bronze com read_files, Silver com parsing de falantes e Gold com ai_query e responseFormat",
+          "responsavel": "Larissa Monteiro",
+          "prazo": "15/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Montar gabarito manual de 6 transcrições e rodar script de métricas de precisão, recall, latência e custo",
+          "responsavel": "Henrique Duarte",
+          "prazo": "17/11/2026",
+          "prioridade": "Alta"
+        },
+        {
+          "tarefa": "Configurar Genie Space conectado às tabelas Gold e solicitar parecer de Compliance",
+          "responsavel": "Vitor Almeida",
+          "prazo": "18/11/2026",
+          "prioridade": "Média"
+        }
+      ]
+    }
+  ]
+}

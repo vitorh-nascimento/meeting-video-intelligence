@@ -1,0 +1,27 @@
+1
+00:00:00,000 --> 00:00:03,000
+Paula Teixeira: Iniciando gravação da reunião Sync Qualidade de Dados — Regras de Expectations na Camada Silver, data 2026-11-21, duração prevista de 28 minutos.
+
+2
+00:00:04,000 --> 00:00:21,000
+Paula Teixeira: Identificamos 0,8% de registros de notas fiscais chegando sem código de município válido na Silver.
+
+3
+00:00:24,000 --> 00:00:44,000
+Caio Batista: Podemos adicionar expectations de qualidade na pipeline Lakeflow separando registros inválidos em uma tabela de auditoria sem travar o fluxo principal.
+
+4
+00:00:47,000 --> 00:01:06,000
+Paula Teixeira: Decisão: implementar expectations ON VIOLATION DROP ROW para chaves nulas e tabela de auditoria para erros de domínio fiscal.
+
+5
+00:01:09,000 --> 00:01:24,000
+Caio Batista: Pendência: aguardando tabela oficial de códigos IBGE atualizada do time Fiscal.
+
+6
+00:01:27,000 --> 00:01:47,000
+Paula Teixeira: Caio, adicione as expectations de qualidade na pipeline fiscal e o painel de taxa de rejeição até 29/11/2026, prioridade Alta.
+
+7
+00:01:50,000 --> 00:02:07,000
+Paula Teixeira: Vou solicitar a tabela IBGE atualizada para a equipe Fiscal até 25/11/2026, prioridade Baixa.

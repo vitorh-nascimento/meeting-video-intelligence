@@ -390,6 +390,106 @@ class Database:
 
         return self.get_document(doc_id)  # type: ignore[return-value]
 
+    def update_document_analysis(
+        self,
+        doc_id: str,
+        *,
+        template: str,
+        llm_provider: str,
+        analysis: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        """Atualiza apenas a análise LLM (metadados, resumo, decisões, pendências, action items e ata) preservando a transcrição."""
+        existing = self.get_document(doc_id)
+        if not existing:
+            return None
+
+        now = utc_now_iso()
+        meta = analysis.get("metadados", {})
+        resumo = analysis.get("resumo_executivo", {})
+        knowledge = analysis.get("informacoes_chave", {})
+        ata_md = analysis.get("ata_markdown", "")
+
+        with self.transaction() as conn:
+            conn.execute(
+                """
+                UPDATE documents
+                SET title = ?, media_type = ?, template = ?, category = ?,
+                    llm_provider = ?, summary_short = ?, summary_bullets_json = ?,
+                    knowledge_json = ?, ata_markdown = ?, analysis_json = ?, updated_at = ?
+                WHERE id = ?
+                """,
+                (
+                    meta.get("titulo", existing["title"]),
+                    meta.get("tipo_midia", existing["media_type"]),
+                    template,
+                    meta.get("categoria_tematica", existing["category"]),
+                    llm_provider,
+                    resumo.get("resumo_curto", ""),
+                    json.dumps(resumo.get("topicos_principais", []), ensure_ascii=False),
+                    json.dumps(knowledge, ensure_ascii=False),
+                    ata_md,
+                    json.dumps(analysis, ensure_ascii=False),
+                    now,
+                    doc_id,
+                ),
+            )
+            conn.execute("DELETE FROM decisions WHERE document_id = ?", (doc_id,))
+            conn.execute("DELETE FROM pendings WHERE document_id = ?", (doc_id,))
+            conn.execute("DELETE FROM action_items WHERE document_id = ?", (doc_id,))
+
+            for d in analysis.get("decisoes", []):
+                conn.execute(
+                    """
+                    INSERT INTO decisions (document_id, decisao, contexto, impacto, participantes_json, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        doc_id,
+                        d.get("decisao", ""),
+                        d.get("contexto", ""),
+                        d.get("impacto", ""),
+                        json.dumps(d.get("participantes_envolvidos", []), ensure_ascii=False),
+                        now,
+                    ),
+                )
+
+            for p in analysis.get("pendencias", []):
+                conn.execute(
+                    """
+                    INSERT INTO pendings (document_id, descricao, responsavel_ou_area, impacto, status, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        doc_id,
+                        p.get("descricao", ""),
+                        p.get("responsavel_ou_area", "A definir"),
+                        p.get("impacto", "Médio"),
+                        p.get("status", "Pendente"),
+                        now,
+                        now,
+                    ),
+                )
+
+            for a in analysis.get("action_items", []):
+                conn.execute(
+                    """
+                    INSERT INTO action_items (document_id, tarefa, responsavel, prazo, prioridade, status, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        doc_id,
+                        a.get("tarefa", ""),
+                        a.get("responsavel", "A definir"),
+                        a.get("prazo", "A definir"),
+                        a.get("prioridade", "Média"),
+                        a.get("status", "Pendente"),
+                        now,
+                        now,
+                    ),
+                )
+
+        return self.get_document(doc_id)
+
     def list_documents(
         self,
         *,

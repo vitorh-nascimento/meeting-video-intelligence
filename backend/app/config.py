@@ -26,6 +26,10 @@ DEFAULT_CATEGORIES: List[str] = [
     "Alinhamento & Gestão de Equipe",
     "Treinamento & Aula Técnica",
     "Governança, Segurança & FinOps",
+    "Sessão Plenária & Câmara Municipal",
+    "Câmara dos Deputados & Senado",
+    "Orçamento & Finanças Públicas",
+    "Infraestrutura, Saúde & Educação",
     "Geral / Outros",
 ]
 
@@ -46,6 +50,21 @@ DEFAULT_GLOSSARY: List[str] = [
     "KPI",
     "ETL",
     "ELT",
+    "Projeto de Lei",
+    "PEC",
+    "Medida Provisória",
+    "Requerimento",
+    "Indicação",
+    "Moção",
+    "Pedido de Vista",
+    "Quorum",
+    "Relator",
+    "CCJ",
+    "LDO",
+    "LOA",
+    "PPA",
+    "Votação Nominal",
+    "Votação Simbólica",
 ]
 
 SECRET_FIELDS = {

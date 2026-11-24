@@ -1,0 +1,310 @@
+{
+  "avaliado_em_utc": "2026-11-23T13:37:59.342788+00:00",
+  "schema_databricks": "workspace.dev_vitortesteestudos_meeting_intelligence_poc",
+  "modelo_llm": "databricks-meta-llama-3-3-70b-instruct",
+  "total_transcricoes_processadas": 18,
+  "total_transcricoes_gabarito": 6,
+  "taxa_json_valido": 1.0,
+  "taxa_data_reuniao_silver": 1.0,
+  "metricas_geral": {
+    "tp": 41,
+    "fp": 3,
+    "fn": 1,
+    "precision": 0.9318,
+    "recall": 0.9762,
+    "f1": 0.9535
+  },
+  "metricas_por_categoria": {
+    "decisoes": {
+      "tp": 11,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.7857,
+      "recall": 0.9167,
+      "f1": 0.8462
+    },
+    "pendencias": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "action_items": {
+      "tp": 18,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "falantes_silver": {
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "acuracia_campos_action_items": {
+    "matched_action_items": 18,
+    "responsavel": 1.0,
+    "prazo": 1.0,
+    "prioridade": 1.0
+  },
+  "latencia": {
+    "amostras": 6,
+    "media_seg": 43.56,
+    "p50_seg": 32.85,
+    "p95_seg": 95.68,
+    "min_seg": 12.27,
+    "max_seg": 108.36,
+    "leituras_seg": [
+      17.39,
+      57.63,
+      27.48,
+      38.23,
+      108.36,
+      12.27
+    ]
+  },
+  "custo": {
+    "modelo": "databricks-meta-llama-3-3-70b-instruct",
+    "total_documentos": 18,
+    "tokens_entrada_total": 12374,
+    "tokens_saida_total": 8808,
+    "tokens_entrada_medio": 687.4,
+    "tokens_saida_medio": 489.3,
+    "dbus_totais_estimados": 0.55426,
+    "custo_total_18_docs_usd": 0.0388,
+    "custo_medio_por_reuniao_usd": 0.00216,
+    "projecao_1000_reunioes_usd": 2.16,
+    "premissa_preco": "Pay-per-Token FMAPI ($0.07/DBU; 14.286 DBU/1M in; 42.857 DBU/1M out)"
+  },
+  "detalhe_por_transcricao": [
+    {
+      "arquivo_origem": "2026-11-02_reuniao_migracao_lakehouse_medallion.vtt",
+      "formato": "vtt",
+      "json_valido": true,
+      "decisoes": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "pendencias": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "action_items": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "falantes_silver": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    {
+      "arquivo_origem": "2026-11-03_reuniao_comite_finops_nuvem_q4.srt",
+      "formato": "srt",
+      "json_valido": true,
+      "decisoes": {
+        "tp": 2,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.6667,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "pendencias": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "action_items": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "falantes_silver": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    {
+      "arquivo_origem": "2026-11-04_reuniao_governanca_unity_catalog_lgpd.txt",
+      "formato": "txt",
+      "json_valido": true,
+      "decisoes": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "pendencias": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "action_items": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "falantes_silver": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    {
+      "arquivo_origem": "2026-11-05_discovery_cliente_portal_selfservice_bi.vtt",
+      "formato": "vtt",
+      "json_valido": true,
+      "decisoes": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "pendencias": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "action_items": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "falantes_silver": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    {
+      "arquivo_origem": "2026-11-06_postmortem_incidente_pipeline_streaming.srt",
+      "formato": "srt",
+      "json_valido": true,
+      "decisoes": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "pendencias": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "action_items": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "falantes_silver": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    {
+      "arquivo_origem": "2026-11-09_planejamento_sprint_genie_ai_assistants.txt",
+      "formato": "txt",
+      "json_valido": true,
+      "decisoes": {
+        "tp": 1,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.3333,
+        "recall": 0.5,
+        "f1": 0.4
+      },
+      "pendencias": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "action_items": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "falantes_silver": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    }
+  ]
+}

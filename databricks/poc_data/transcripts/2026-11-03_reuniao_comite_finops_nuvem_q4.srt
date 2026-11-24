@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:03,000
+Lucas Ferreira: Iniciando gravação da reunião Comitê Mensal FinOps — Otimização de Custos Cloud Q4, data 2026-11-03, duração prevista de 35 minutos.
+
+2
+00:00:04,000 --> 00:00:26,000
+Lucas Ferreira: Pessoal, nossa fatura mensal de computação em nuvem subiu 28% em outubro por causa de clusters interativos ociosos e SQL Warehouses grandes ligados de madrugada.
+
+3
+00:00:29,000 --> 00:00:49,000
+Beatriz Mendes: Analisei as system tables de billing do Databricks e 41% do gasto veio de 4 clusters clássicos sem auto-termination configurado.
+
+4
+00:00:52,000 --> 00:01:14,000
+Lucas Ferreira: Então decisão fechada: vamos habilitar auto-termination obrigatório de 15 minutos em todos os clusters interativos e migrar os jobs de ETL noturnos para Serverless Compute.
+
+5
+00:01:17,000 --> 00:01:35,000
+Thiago Alves: Também recomendo definir orçamento mensal com alerta automático quando o consumo atingir 80% da meta do trimestre.
+
+6
+00:01:38,000 --> 00:01:58,000
+Lucas Ferreira: Aprovado! Segunda decisão: implementar alertas de orçamento no Unity Catalog e FinOps dashboard com gatilho em 80% do budget mensal.
+
+7
+00:02:01,000 --> 00:02:23,000
+Beatriz Mendes: Temos uma pendência em aberto: o time de Ciência de Dados ainda não justificou a necessidade de manter duas instâncias GPU ligadas 24x7 em homologação.
+
+8
+00:02:26,000 --> 00:02:45,000
+Thiago Alves: E continua pendente a definição de tags obrigatórias de centro de custo junto à Controladoria para rateio por diretoria.
+
+9
+00:02:48,000 --> 00:03:09,000
+Lucas Ferreira: Vamos às tarefas. Beatriz, aplique a política de cluster com auto-termination de 15 minutos em dev e homologação até 07/11/2026, prioridade Alta.
+
+10
+00:03:12,000 --> 00:03:24,000
+Beatriz Mendes: Feito, aplico até sexta.
+
+11
+00:03:27,000 --> 00:03:45,000
+Lucas Ferreira: Thiago, construa o painel FinOps usando system.billing.usage com alerta em 80% do orçamento até 12/11/2026, prioridade Alta.
+
+12
+00:03:48,000 --> 00:04:00,000
+Thiago Alves: Perfeito, começo amanhã.
+
+13
+00:04:03,000 --> 00:04:21,000
+Lucas Ferreira: Eu mesmo vou cobrar a lista de centros de custo da Controladoria até 09/11/2026, prioridade Média.

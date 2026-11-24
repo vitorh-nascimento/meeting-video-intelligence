@@ -1,0 +1,50 @@
+WEBVTT
+NOTE Reunião: Discovery com Diretoria Comercial — Portal Self-Service BI e Genie | Data: 2026-11-05 | Duração: 40 min
+
+cue-001
+00:00:05.000 --> 00:00:23.000
+<v Carla Oliveira>Obrigado por participar, pessoal. Queremos entender como os gerentes regionais consomem os números de vendas hoje.</v>
+
+cue-002
+00:00:26.000 --> 00:00:47.000
+<v Eduardo Santos>Hoje levamos dois dias pedindo relatório ad-hoc para o time de BI só para saber quais produtos caíram de margem na semana.</v>
+
+cue-003
+00:00:50.000 --> 00:01:10.000
+<v Carla Oliveira>Se entregarmos um Genie Space conectado às tabelas Gold de vendas e margem, vocês conseguiriam fazer essas perguntas em linguagem natural.</v>
+
+cue-004
+00:01:13.000 --> 00:01:34.000
+<v Eduardo Santos>Isso resolveria 80% das nossas reuniões de segunda-feira! Mas precisamos que o conceito de receita líquida seja único para todas as diretorias.</v>
+
+cue-005
+00:01:37.000 --> 00:02:03.000
+<v Patrícia Gomes>Perfeito. Então fechamos duas decisões de produto: primeiro, criar um piloto de Genie Space focado nos 12 gerentes comerciais regionais; segundo, publicar uma Metric View oficial para receita líquida e margem bruta.</v>
+
+cue-006
+00:02:06.000 --> 00:02:27.000
+<v Eduardo Santos>Uma pendência do nosso lado: ainda não consolidamos a nova tabela de metas por região de 2027, que depende da aprovação da Vice-Presidência.</v>
+
+cue-007
+00:02:30.000 --> 00:02:51.000
+<v Patrícia Gomes>E do lado técnico está pendente validar se os gerentes comerciais já possuem licença de acesso ao Databricks SQL para usar o Genie.</v>
+
+cue-008
+00:02:54.000 --> 00:03:17.000
+<v Carla Oliveira>Vamos fechar os próximos passos. Patrícia, publique a Metric View de receita líquida e margem bruta e configure o Genie Space piloto até 18/11/2026, prioridade Alta.</v>
+
+cue-009
+00:03:20.000 --> 00:03:33.000
+<v Patrícia Gomes>Beleza, entrego com perguntas de exemplo validadas.</v>
+
+cue-010
+00:03:36.000 --> 00:03:56.000
+<v Carla Oliveira>Eduardo, compartilhe o dicionário de KPIs comerciais e a lista dos 12 gerentes participantes do piloto até 10/11/2026, prioridade Alta.</v>
+
+cue-011
+00:03:59.000 --> 00:04:12.000
+<v Eduardo Santos>Envio ainda nesta semana, até dia 10.</v>
+
+cue-012
+00:04:15.000 --> 00:04:34.000
+<v Carla Oliveira>Eu vou confirmar os acessos Databricks SQL dos 12 gerentes com o time de TI até 12/11/2026, prioridade Média.</v>

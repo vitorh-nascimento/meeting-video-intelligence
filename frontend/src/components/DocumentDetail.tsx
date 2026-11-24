@@ -11,12 +11,20 @@ import {
   FileText,
   Lightbulb,
   Loader2,
+  RefreshCw,
   Search,
   Square,
 } from "lucide-react";
 import { api } from "../api/client";
-import type { DocumentDetailData } from "../types";
+import type { DocumentDetailData, ExtractionTemplate } from "../types";
 import { TranscriptChat } from "./TranscriptChat";
+
+const REANALYZE_TEMPLATES: ExtractionTemplate[] = [
+  "Reunião Corporativa",
+  "Aula/Vídeo Técnico",
+  "Discovery/Cliente",
+  "Sessão Legislativa / Política",
+];
 
 interface DocumentDetailProps {
   docId: string;
@@ -40,12 +48,17 @@ export const DocumentDetail: React.FC<DocumentDetailProps> = ({ docId, onBack })
   const [highlightTs, setHighlightTs] = useState<string | null>(null);
   const [pushingDbx, setPushingDbx] = useState(false);
   const [dbxNotice, setDbxNotice] = useState<string | null>(null);
+  const [reanalyzeTemplate, setReanalyzeTemplate] = useState<ExtractionTemplate>("Sessão Legislativa / Política");
+  const [reanalyzing, setReanalyzing] = useState(false);
 
   const loadDoc = async () => {
     setLoading(true);
     try {
       const data = await api.getDocument(docId);
       setDoc(data);
+      if (REANALYZE_TEMPLATES.includes(data.template as ExtractionTemplate)) {
+        setReanalyzeTemplate(data.template as ExtractionTemplate);
+      }
     } finally {
       setLoading(false);
     }
@@ -101,6 +114,21 @@ export const DocumentDetail: React.FC<DocumentDetailProps> = ({ docId, onBack })
     }
   };
 
+  const handleReanalyze = async () => {
+    if (!doc) return;
+    setReanalyzing(true);
+    setDbxNotice(`Reanalisando transcrição com o template "${reanalyzeTemplate}" (sem refazer o Whisper)...`);
+    try {
+      const updated = await api.reanalyzeDocument(doc.id, reanalyzeTemplate);
+      setDoc(updated);
+      setDbxNotice(`Análise atualizada com sucesso usando o template "${reanalyzeTemplate}"!`);
+    } catch (err) {
+      setDbxNotice(`Erro ao reanalisar: ${err instanceof Error ? err.message : String(err)}`);
+    } finally {
+      setReanalyzing(false);
+    }
+  };
+
   const handleJumpToTimestamp = (ts: string) => {
     setHighlightTs(ts);
     setActiveTab("transcript");
@@ -124,11 +152,12 @@ export const DocumentDetail: React.FC<DocumentDetailProps> = ({ docId, onBack })
     );
   });
 
+  const isLegislative = doc.template === "Sessão Legislativa / Política";
   const tabs: { id: DetailTab; label: string; badge?: number }[] = [
-    { id: "summary", label: "Resumo & Ata" },
-    { id: "decisions", label: "Decisões", badge: doc.decisions.length },
-    { id: "pendings", label: "Pendências", badge: doc.pendings.length },
-    { id: "actions", label: "Action Items", badge: doc.action_items.length },
+    { id: "summary", label: isLegislative ? "Boletim & Ata" : "Resumo & Ata" },
+    { id: "decisions", label: isLegislative ? "Votações & Decisões" : "Decisões", badge: doc.decisions.length },
+    { id: "pendings", label: isLegislative ? "Indicações & Pendências" : "Pendências", badge: doc.pendings.length },
+    { id: "actions", label: isLegislative ? "Encaminhamentos" : "Action Items", badge: doc.action_items.length },
     { id: "knowledge", label: "Informações & Entidades" },
     { id: "transcript", label: "Transcrição", badge: doc.segments.length },
   ];
@@ -176,6 +205,34 @@ export const DocumentDetail: React.FC<DocumentDetailProps> = ({ docId, onBack })
                 <Download className="w-3.5 h-3.5" /> .{fmt}
               </a>
             ))}
+            <div className="flex items-center gap-1.5">
+              <select
+                value={reanalyzeTemplate}
+                onChange={(e) => setReanalyzeTemplate(e.target.value as ExtractionTemplate)}
+                disabled={reanalyzing}
+                className="rounded-xl border border-slate-300 bg-white px-2.5 py-1.5 text-xs text-slate-700"
+                title="Escolher template para reanalisar a transcrição já salva"
+              >
+                {REANALYZE_TEMPLATES.map((tpl) => (
+                  <option key={tpl} value={tpl}>
+                    {tpl}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                disabled={reanalyzing}
+                onClick={handleReanalyze}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-medium transition cursor-pointer"
+              >
+                {reanalyzing ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-3.5 h-3.5" />
+                )}
+                {reanalyzing ? "Reanalisando..." : "Reanalisar"}
+              </button>
+            </div>
             <button
               type="button"
               disabled={pushingDbx}

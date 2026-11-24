@@ -163,6 +163,15 @@ export const api = {
     return handleResponse(resp);
   },
 
+  async reanalyzeDocument(docId: string, template: string): Promise<DocumentDetailData> {
+    const resp = await fetch(`${API_BASE}/api/documents/${docId}/reanalyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ template }),
+    });
+    return handleResponse<DocumentDetailData>(resp);
+  },
+
   async getSettings(): Promise<AppSettings> {
     const resp = await fetch(`${API_BASE}/api/settings`);
     return handleResponse<AppSettings>(resp);

@@ -1,0 +1,54 @@
+WEBVTT
+NOTE Reunião: Comitê de Arquitetura — Migração para Databricks Lakehouse Medallion | Data: 2026-11-02 | Duração: 42 min
+
+cue-001
+00:00:05.000 --> 00:00:25.000
+<v Marina Souza>Bom dia pessoal, hoje vamos fechar o desenho da migração do data warehouse legado para o Databricks Lakehouse em arquitetura Medalhão.</v>
+
+cue-002
+00:00:28.000 --> 00:00:49.000
+<v Rafael Lima>Fizemos os testes com Lakeflow Spark Declarative Pipelines em modo serverless e o tempo de carga caiu de 3 horas para 22 minutos.</v>
+
+cue-003
+00:00:52.000 --> 00:01:14.000
+<v Marina Souza>Excelente. Então fica oficialmente aprovado que todas as novas pipelines de vendas e estoque serão implementadas em Lakeflow Serverless usando Liquid Clustering nas tabelas Gold.</v>
+
+cue-004
+00:01:17.000 --> 00:01:39.000
+<v Camila Rocha>Concordo. Também precisamos definir o padrão de ingestão dos arquivos CSV do ERP. O Auto Loader com read_files resolveu os problemas de schema drift.</v>
+
+cue-005
+00:01:42.000 --> 00:02:02.000
+<v Marina Souza>Perfeito, segunda decisão registrada: a camada Bronze vai padronizar ingestão incremental via read_files a partir de Volumes do Unity Catalog.</v>
+
+cue-006
+00:02:05.000 --> 00:02:28.000
+<v Diego Martins>Só um alerta importante: ainda estamos bloqueados aguardando o time de Infraestrutura liberar o Private Link entre a VPC do ERP SAP e o workspace Databricks.</v>
+
+cue-007
+00:02:31.000 --> 00:02:55.000
+<v Camila Rocha>Outro ponto em aberto é a validação jurídica sobre o período de retenção de 7 anos para dados fiscais no Delta Lake, ainda não recebemos parecer do Jurídico.</v>
+
+cue-008
+00:02:58.000 --> 00:03:22.000
+<v Marina Souza>Vamos transformar isso em ações claras. Rafael, você fica responsável por criar o template do Databricks Asset Bundle com as camadas Bronze, Silver e Gold até 10/11/2026, prioridade Alta.</v>
+
+cue-009
+00:03:25.000 --> 00:03:39.000
+<v Rafael Lima>Combinado, entrego o bundle validado até dia 10.</v>
+
+cue-010
+00:03:42.000 --> 00:04:04.000
+<v Marina Souza>Diego, por favor escale o chamado do Private Link com a equipe de Redes e traga uma previsão de entrega até 06/11/2026, prioridade Alta.</v>
+
+cue-011
+00:04:07.000 --> 00:04:20.000
+<v Diego Martins>Pode deixar, abro a escalação hoje mesmo.</v>
+
+cue-012
+00:04:23.000 --> 00:04:42.000
+<v Marina Souza>Camila, documente a estratégia de Liquid Clustering e governança de retenção na wiki de Arquitetura até 14/11/2026, prioridade Média.</v>
+
+cue-013
+00:04:45.000 --> 00:04:58.000
+<v Camila Rocha>Anotado! Até dia 14 publico a documentação.</v>

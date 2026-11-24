@@ -1,0 +1,18 @@
+Reunião: Alinhamento Governança de Dados — Unity Catalog e LGPD
+Data: 2026-11-04
+Duração: 48 min
+Participantes: Fernanda Costa, Gustavo Pereira, Juliana Nunes
+---
+
+[00:00:10] Fernanda Costa: O objetivo de hoje é fechar as regras de mascaramento de PII e controle de acesso no Unity Catalog antes da auditoria externa de LGPD.
+[00:00:39] Gustavo Pereira: Mapeamos 14 tabelas com CPF, e-mail e telefone de clientes na camada Silver e Gold.
+[00:01:03] Fernanda Costa: Fica decidido que todas as colunas de PII receberão Column Masks nativas no Unity Catalog vinculadas ao grupo corporativo pii_authorized_analysts.
+[00:01:30] Juliana Nunes: Para os analistas regionais, precisamos também restringir as linhas por filial.
+[00:01:52] Fernanda Costa: Aprovado. Segunda decisão: ativar Row-Level Security por código de filial nas tabelas de clientes e pedidos da camada Gold.
+[00:02:18] Gustavo Pereira: Temos um bloqueio no momento: o provedor de identidade Entra ID ainda não sincronizou via SCIM os grupos regionais de vendas com a conta Databricks.
+[00:02:47] Juliana Nunes: Também ficou pendente a aprovação do DPO sobre o texto do termo de responsabilidade para exportação de dados em CSV.
+[00:03:14] Fernanda Costa: Ações definidas: Gustavo, implemente as funções SQL de Column Mask para CPF, e-mail e telefone nas 14 tabelas até 13/11/2026, prioridade Alta.
+[00:03:42] Gustavo Pereira: Combinado, crio as funções e aplico nas tabelas até dia 13.
+[00:04:04] Fernanda Costa: Juliana, configure o filtro de Row-Level Security nas tabelas Gold de clientes e pedidos até 16/11/2026, prioridade Alta.
+[00:04:30] Juliana Nunes: Anotado, deixo pronto com testes de permissão.
+[00:04:50] Fernanda Costa: Vou agendar revisão com o DPO e cobrar o time de IAM sobre o SCIM do Entra ID até 08/11/2026, prioridade Alta.
